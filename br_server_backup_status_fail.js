@@ -56,13 +56,7 @@ var gr = new GlideRecord('change_request');
 	while (gr.next()){
 		//optional: tracing Assignment group ID 
 		var ag = gr.assignment_group;
-		gs.print('Assignment group ' + ag.getDisplayValue());
-		
-		/*
-		//optional: tracing Change Request Number 
-		var cNum = gr.number;
-		gs.print('Change Request Number ' + cNum);
-		*/
+		gs.print('Assignment group ' + ag.getDisplayValue()); // OK
 		
 		var ci = gr.cmdb_ci
 		gs.print('Configuration Item ' + ci.getDisplayValue()); // OK
@@ -71,36 +65,41 @@ var gr = new GlideRecord('change_request');
 			chreq.addQuery('ci_item', ci);
 			chreq.query();
 			while(chreq.next()){
-				//var n = chreq.task; //Change Request ID for related task
-				var reqnum = chreq.task.number; //Change Request number
+				//var reqnum = chreq.task.number; //Change Request number
 				gs.print('@@@ Related Change Request number ' + chreq.task.number); //OK
-				
 				
 				var chTask = new GlideRecord('change_task');
 					chTask.addQuery('change_request', chreq.task); 
 					chTask.addActiveQuery(); 
 					chTask.query();
-					while(chTask.next()){
-						gs.print('Associated Task number ' + chTask.number); //OK
-					}
-				/*
-					chreq.addQuery('ci_item', ci);
-						if(){
-							task.initialize();
-							task.change_request = n
-							task.short_description = 'backup status: ' +  bs + ' @ ' + name;
-							task.description = 'backup status: ' +  bs + ' @ ' + name;
-							task.insert();
-							gs.print('task created ' + task.number + '. backup status: ' +  bs + ' @ ' + name);
+					
+					//if (chTask.hasNext()) {
+					while (chTask.next()) {
+						var count = chTask.getRowCount();//lookup if there any relevent records
+						if (count > 0) {
+							//gs.print('Associated Task number ' + chTask.number); //OK
+							chTask.cmdb_ci = ci;
+							chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+							chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+							chTask.update();
+							
+							gs.print('Task updated: ' + chTask.number + ' Affected Configuration Item: ' +  ci.getDisplayValue());	
+						} else if (count = 0) {
+							/*
+							gs.print('More than one Tack detected: ' + chTask.number);
 						} else {
-							task.initialize();
-							task.short_description = 'backup status: ' +  bs + ' @ ' + name;
-							task.description = 'backup status: ' +  bs + ' @ ' + name;
-							task.update();
-							gs.print('task updated ' + task.number + '. backup status: ' +  bs + ' @ ' + name);
+							*/
+							//gs.print('@@@@@@@@@@@@@@ Associated Task number ' + chTask.number); //OK
+							chTask.initialize();
+							chTask.change_request = chreq.task;
+							chTask.cmdb_ci = ci;
+							chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+							chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+							chTask.insert();
+							
+							gs.print('Task created: ' + chTask.number + ' Affected Configuration Item: ' + ci.getDisplayValue());	
 						}
-				*/		
+					}
 			}
 	}
-
 //business rule
