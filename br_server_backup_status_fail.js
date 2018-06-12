@@ -47,59 +47,118 @@ var gr = new GlideRecord('cmdb_ci_server');
 когда в бекап статус проставляется fail, 
 мы должны найти все активные ченджи на команде бекап с этим сервером, и если там есть таск, то обновить его с информацией о сервере, а если таска нет - создать.	
 
-
+//working bg script
 var queStr = 'assignment_group=eee8777a0fa213009faf409ce1050ef7';
 var gr = new GlideRecord('change_request');
 	gr.addEncodedQuery(queStr);//assigned to FJ Backup group
 	gr.addActiveQuery(); 
 	gr.query();
 	while (gr.next()){
+		gs.print('\n\n=================================================================================\n');
 		//optional: tracing Assignment group ID 
 		var ag = gr.assignment_group;
 		gs.print('Assignment group ' + ag.getDisplayValue()); // OK
 		
-		var ci = gr.cmdb_ci
+		var ci = gr.cmdb_ci;
 		gs.print('Configuration Item ' + ci.getDisplayValue()); // OK
 		
 		var chreq = new GlideRecord('task_ci');
-			chreq.addQuery('ci_item', ci);
+			chreq.addEncodedQuery('taskSTARTSWITHCHG');//query for tasks which starts with 'CHG'
+			chreq.addQuery('ci_item', ci);//query for Configuration Item
 			chreq.query();
 			while(chreq.next()){
 				//var reqnum = chreq.task.number; //Change Request number
 				gs.print('@@@ Related Change Request number ' + chreq.task.number); //OK
 				
 				var chTask = new GlideRecord('change_task');
-					chTask.addQuery('change_request', chreq.task); 
-					chTask.addActiveQuery(); 
+					chTask.addQuery('change_request', chreq.task);
 					chTask.query();
 					
-					//if (chTask.hasNext()) {
-					while (chTask.next()) {
-						var count = chTask.getRowCount();//lookup if there any relevent records
-						if (count > 0) {
-							//gs.print('Associated Task number ' + chTask.number); //OK
-							chTask.cmdb_ci = ci;
-							chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
-							chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
-							chTask.update();
+						if (chTask.hasNext()) {
 							
-							gs.print('Task updated: ' + chTask.number + ' Affected Configuration Item: ' +  ci.getDisplayValue());	
-						} else if (count = 0) {
-							/*
-							gs.print('More than one Tack detected: ' + chTask.number);
+							chTask.addActiveQuery(); 
+							chTask.query();
+							while (chTask.next()) {
+								chTask.cmdb_ci = ci;
+								chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+								chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+								chTask.update();
+								
+								gs.print('Task updated: ' + chTask.number + ' Affected Configuration Item: ' +  ci.getDisplayValue());	
+							}
 						} else {
-							*/
-							//gs.print('@@@@@@@@@@@@@@ Associated Task number ' + chTask.number); //OK
-							chTask.initialize();
-							chTask.change_request = chreq.task;
-							chTask.cmdb_ci = ci;
-							chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
-							chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
-							chTask.insert();
-							
-							gs.print('Task created: ' + chTask.number + ' Affected Configuration Item: ' + ci.getDisplayValue());	
+							var gTask2 = new GlideRecord('change_task');
+								gTask2.query();
+								if (gTask2.next()) {
+									chTask.initialize();
+									chTask.change_request = chreq.task;
+									chTask.cmdb_ci = ci;
+									chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+									chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+									chTask.insert();
+									
+									gs.print('Task created: ' + chTask.number + ' Affected Configuration Item: ' + ci.getDisplayValue());
+								}
 						}
-					}
 			}
-	}
+	}	
+
+
 //business rule
+(function executeRule(current, previous /*null when async*/) {
+
+	var queStr = 'assignment_group=eee8777a0fa213009faf409ce1050ef7';
+	var gr = new GlideRecord('change_request');
+		gr.addEncodedQuery(queStr);//assigned to FJ Backup group
+		gr.addActiveQuery(); 
+		gr.query();
+		while (gr.next()){
+			gs.print('\n\n=================================================================================\n');
+			//optional: tracing Assignment group ID 
+			var ag = gr.assignment_group;
+			gs.log('Assignment group ' + ag.getDisplayValue());
+			//optional: tracing Assignment group ID 
+			var ci = gr.cmdb_ci;
+			gs.log('Configuration Item ' + ci.getDisplayValue());
+
+			var chreq = new GlideRecord('task_ci');
+				chreq.addEncodedQuery('taskSTARTSWITHCHG');//query for tasks which starts with 'CHG'
+				chreq.addQuery('ci_item', ci);
+				chreq.query();
+				while(chreq.next()){
+					gs.log('@@@ Related Change Request number ' + chreq.task.number); 
+
+					var chTask = new GlideRecord('change_task');
+						chTask.addQuery('change_request', chreq.task);
+						chTask.query();
+
+							if (chTask.hasNext()) {
+
+								chTask.addActiveQuery(); 
+								chTask.query();
+								while (chTask.next()) {
+									chTask.cmdb_ci = ci;
+									chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+									chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+									chTask.update();
+
+									gs.log('Task updated: ' + chTask.number + ' Affected Configuration Item: ' +  ci.getDisplayValue());	
+								}
+							} else {
+								var gTask2 = new GlideRecord('change_task');
+									gTask2.query();
+									if (gTask2.next()) {
+										chTask.initialize();
+										chTask.change_request = chreq.task;
+										chTask.cmdb_ci = ci;
+										chTask.short_description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+										chTask.description = 'Affected Configuration Item: ' +  ci.getDisplayValue();
+										chTask.insert();
+
+										gs.log('Task created: ' + chTask.number + ' Affected Configuration Item: ' + ci.getDisplayValue());
+									}
+							}
+				}
+		}
+
+})(current, previous);
