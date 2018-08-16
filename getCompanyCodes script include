@@ -1,0 +1,47 @@
+/*
+name:getCompanyCodes
+API.name:global.getCompanyCodes
+Client callable:true
+
+
+on Company Code/ Customer Number variable
+set 'Usa reference qualifier':Advanced
+
+!!!IMPORTANT
+set 'Reference qual':
+javascript: new getCompanyCodes().MyFunction(current.variables.u_country);
+
+
+where
+getCompanyCodes() - your script include
+.MyFunction - name of your function
+(current.variables.u_country) - param
+*/
+var getCompanyCodes = Class.create();
+	getCompanyCodes.prototype = Object.extendsObject(AbstractAjaxProcessor, {
+		
+
+		MyFunction: function(countryName) { 
+			
+			var companyCode = '';
+			var question = new GlideRecord('u_company_codes');
+			question.addQuery('u_country', countryName);
+
+			question.query();
+			var count = question.getRowCount();
+			var i = 1;
+			while(question.next()){
+					if(i < count){
+						companyCode += question.sys_id.toString() + ',';
+					} 
+					if(i == count){
+							companyCode += question.sys_id.toString();
+						}
+				i++;
+			}
+			//gs.log('getCompanyCodes query ' + 'sys_idIN' + companyCode);
+			var newQuery = 'sys_idIN' + companyCode;
+			return newQuery;
+		},
+		type: 'getCompanyCodes'
+});
