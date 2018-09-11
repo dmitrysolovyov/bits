@@ -1,0 +1,10 @@
+/*
+Search on Two Columns with Reference Field Variables
+
+You can search on different columns by setting "ref_ac_columns_search" attribute to true. The following example I can search on u_code, u_name and u_symbol fields of the Currency table by suing this in the attributes field
+
+ref_ac_columns=u_code;u_name;u_symbol - columns to search
+
+set Attributes to following:
+*/
+ef_auto_completer=AJAXTableCompleter,ref_ac_columns=u_code;u_name;u_symbol,ref_ac_columns_search=true,edge_encryption_enabled=true
