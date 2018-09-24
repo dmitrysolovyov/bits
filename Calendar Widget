@@ -1,0 +1,64 @@
+//Html
+<div class="panel card-box card-theme-primary">
+  <div class="panel-heading">${HR Calendar}</div>
+  <div class="panel-body">
+    <div ng-bind-html="::data.calendar_html"></div>    
+  </div>
+</div>
+
+//Client
+function($scope, $sce) {
+  /* widget controller */
+  var c = this;
+	c.data.calendar_html = $sce.trustAsHtml(c.data.calendar);
+}
+
+//server
+(function() {
+	var userr = new GlideRecord("sys_user");
+	userr.get(gs.getUserID());
+	var val = userr.country;
+	var countryCode = val.toLowerCase();
+
+	var gr_country = new GlideRecord('core_country');
+	//compare ISO Short with c countryCode from user
+	gr_country.addQuery('iso3166_2', countryCode);
+	gr_country.query();
+	var countryID = '';
+	if(gr_country.next()){
+		countryID = gr_country.sys_id;
+		showHRCalendar();
+	}
+
+	function showHRCalendar(){
+		var gr_event = new GlideRecord('u_hr_calendar');
+		gr_event.addQuery('u_country', countryID);
+		gr_event.query();
+		if (gr_event.next()) {
+			data.calendar = gr_event.u_event.toString();
+		}
+	}
+
+})();
+
+
+
+
+//business rule to validate country. 
+//there can be only 1 calendar per country
+
+//AskHR | one calendar per country
+//u_hr_calendar
+//before insert upgrade
+(function executeRule(current, previous /*null when async*/) {
+
+	var gr = new GlideRecord('u_hr_calendar');
+	gr.addQuery('sys_id', '!=', current.sys_id);
+	gr.addQuery('u_country',current.u_country);
+	gr.query();
+	if(gr.next()){
+		gs.addErrorMessage('Calendar for ' + gr.u_country.name + ' already exists');
+		current.setAbortAction(true);
+	}
+
+})(current, previous);
