@@ -1,0 +1,11 @@
+var translated = 'Pressione enviar para submeter os seus comentários.';
+var textbody = translated + 'Ref:MSG2694592'
+console.warn('textbody: ' + textbody);
+var regex = new RegExp(translated + 'Ref:MSG[0-9]{7}');
+console.warn('regex: ' + regex);
+textbody = textbody.replace(regex, "");
+var a = 1;
+if(textbody.length == 0) {
+    a = 0;
+}
+console.warn('replaceded: ' + a);
