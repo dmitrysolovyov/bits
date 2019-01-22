@@ -1,47 +1,59 @@
 {
 
 	"GlideRecord": {
-		"scope": "javascript,typescript",
-		"prefix": "vargr",
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "gr",
 		"body": [
-			"var gr${1:table} = new GlideRecord('$1');",
-			"gr${1:table}.addQuery('$2', '$3');",
-			"//gr${1:table}.addEncodedQuery('');",
-			"//gr${1:table}.orderByDesc('');",
-			"//gr${1:table}.setLimit(20);",
-			"gr${1:table}.query();",
-			"while (gr${1:table}.next()) {",
-			"	//logic here",
-			"	gs.log('${2:field}: ' + gr${1:table}.getValue('${2:field}'));",
-			"}"
+			"var gr = new GlideRecord('$1');",
+			"gr.addQuery('$2', '$3');",
+			"gr.query();",
+			"while (gr.next()) {",
+			"	${4://logic here}",
+			"}",
 		],
 		"description": "Create a GlideRecord"
 	},
 
 	"Current Variable": {
-		"scope": "javascript,typescript",
+		"scope": "javascript,typescript,plaintext",
 		"prefix": "cur",
 		"body": [
-		"var current = new GlideRecord('$1');",
-		"current.get('sys_id', '$2');"
+			"var current = new GlideRecord('$1');",
+			"current.get('sys_id', '$2');"
 		],
 		"description": "Create a Current variable for background script"
 	},
 
 	"Create GlideAjax": {
-		"scope": "javascript,typescript",
-		"prefix": "gl",
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "ga",
 		"body": [
-		"var gla${1:table} = new GlideAjax('$1');",
-		"gla${1:table}.addParam('sysparm_name','$2');",
-		"gla${1:table}.addParam('sysparm_${3:field}', '$4');",
-		"gla${1:table}.getXML(GetAnswer);",
-		"function GetAnswer(response) {",
-		"	var answer = response.responseXML.documentElement.getAttribute('answer');",
-		"	//logic here",
-		"}"
+			"var ga = new GlideAjax('$1');",
+			"ga.addParam('sysparm_name','$2');",
+			"ga.addParam('sysparm_${3:field}', '$4');",
+			"ga.getXML(GetResponse);",
+			"",
+			"function GetResponse(response) {",
+			"	var answer = response.responseXML.documentElement.getAttribute('answer');",
+			"	${5://logic here}",
+			"}",
 		],
 		"description": "Create a new GlideAjax"
+	},
+	"addInfoMessage": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "gsa",
+		"body": [
+			"gs.addInfoMessage('$1 '+ $2);"
+		],
+		"description": "addInfoMessage"
+	},
+	"gs.print": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "gsp",
+		"body": [
+			"gs.print('$1 '+ $2);"
+		],
+		"description": "gs.print()"
 	}
 }
-
