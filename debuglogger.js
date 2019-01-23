@@ -1,11 +1,10 @@
-const DEBUG = true; // Enable or Disable logging
-const LOG_PREFIX = "[DEBUG]";
+var DEBUG = true; // true or false to Enable/Disable logging
+var LOG_PREFIX = "[DEBUG]";
 var log = function(){
     if(DEBUG){
-        //console.log.apply(console, arguments);
-        var args = Array.prototype.slice.call(arguments);           // 1. Convert args to a normal array
-        args.unshift(LOG_PREFIX + " ");                             // 2. Add a log prefix
-        console.log.apply(console, args);                           // 3. Pass arguments to console.log
+        var args = Array.prototype.slice.call(arguments);// 1. Convert args to a normal array
+        args.unshift(LOG_PREFIX + " ");// 2. Add a log prefix to the beginning of the array
+        console.log.apply(console, args);// 3. Pass arguments to console.log
     }
 }
 
