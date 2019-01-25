@@ -55,5 +55,34 @@
 			"gs.print('$1 '+ $2);"
 		],
 		"description": "gs.print()"
-	}
+	,
+	"debug logger": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "debug",
+		"body": [
+			"var DEBUG = true; // true or false to Enable/Disable logging",
+			"var LOG_PREFIX = '[DEBUG]';",
+			"var log = function(){",
+			"	if(DEBUG){",
+			"		var args = Array.prototype.slice.call(arguments);",
+			"		args.unshift(LOG_PREFIX + ' ');",
+			"		console.log.apply(console, args);",
+			"	}",
+			"}"
+		],
+		"description": "create debug logger function"
+	},
+    "try catch": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "trc",
+		"body": [
+            "try {",
+            "	${1://logic here}",
+            "} catch (err) {",
+            "	console.warn('ERROR - '' + err);",
+            "   ${2://some more logic here}",
+            "}"
+        ],
+        "description": "Try Cacth Statement"
+    }
 }
