@@ -19,3 +19,14 @@ var log = function(){
 //if DEBUG == true, 
 //will return the following 
 //"[DEBUG]  fieldValue : 12";
+
+
+//For server side
+var DEBUG = true;
+var LOG_PREFIX = "[DEBUG]";
+var log = function(f){
+    if(DEBUG){
+        var info = LOG_PREFIX + " "+ f;
+        gs.addInfoMessage(info);
+    }
+};
