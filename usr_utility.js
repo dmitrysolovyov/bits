@@ -8,43 +8,51 @@ var log = function(){
     }
 }
 function makeID() {
-    var text = "";
+    var id = "";
     var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
     for (var i = 0; i < 30; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+        id += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    return text;
+    return id;
 }
-var sys_id = makeID();
-var firstname = "Dmitry";
-var lastname = "Azgarat";
-var email = 'azgarat@example.com';
-var usr = class{
-    getUserID(){ 
-       return sys_id;
-    };
-    getFirstName(){
-        return firstname;
-    };
-    getLastName(){
-        return lastname;
-    };
-    getFullName(){
-        return firstname+' '+lastname;
-    };
-    getEmail(){
-        return email;
-    }
-}
-function createUserRecord() {
+function createUserRecord(input) {
     var o = new Object();
     o.sys_id = makeID();
-    if(input){
-        
+    if(input.userEmail){
+        log('userEmail : '+input.userEmail);
+        o.email = input.userEmail.toString();
+    }
+    if(input.userFirstname){
+        log('userFirstname : '+input.userFirstname);
+        o.firstname = input.userFirstname.toString();
+    }
+    if(input.userLastname){
+        log('userLastname : '+input.userLastname);
+        o.lastname = input.userLastname.toString();
+    }
+    return o;
+}
+var myInput = {
+    'userEmail':'dmitry.azgarat@email.com',
+    'userFirstname':'Dmitry',
+    'userLastname':'Azgarat'
+};
+var current = createUserRecord(myInput);
+var usr = class{
+    getUserID(){ 
+       return current.sys_id;
+    };
+    getFirstName(){
+        return current.firstname;
+    };
+    getLastName(){
+        return current.lastname;
+    };
+    getFullName(){
+        return current.firstname+' '+current.lastname;
+    };
+    getEmail(){
+        return current.email;
     }
 }
-var user_info = new Object();
-user_info.sys_id = new usr().getUserID();
-user_info.name = new usr().getFullName();
-user_info.email = new usr().getEmail();
-log('user id: '+ user_info.sys_id +" "+ user_info.name +" "+ user_info.email );
+log('user id: '+ new usr().getUserID() +" "+ new usr().getFullName() +" "+ new usr().getEmail() );
