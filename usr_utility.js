@@ -33,26 +33,27 @@ function createUserRecord(input) {
     return o;
 }
 var myInput = {
-    'userEmail':'dmitry.azgarat@email.com',
+    'userEmail':'dmitry.solovyov@email.com',
     'userFirstname':'Dmitry',
-    'userLastname':'Azgarat'
+    'userLastname':'Solovyov'
 };
-var current = createUserRecord(myInput);
+var the_input = createUserRecord(myInput);
 var usr = class{
     getUserID(){ 
-       return current.sys_id;
+       return the_input.sys_id;
     };
     getFirstName(){
-        return current.firstname;
+        return the_input.firstname;
     };
     getLastName(){
-        return current.lastname;
+        return the_input.lastname;
     };
     getFullName(){
-        return current.firstname+' '+current.lastname;
+        return the_input.firstname+' '+the_input.lastname;
     };
     getEmail(){
-        return current.email;
+        return the_input.email;
     }
 }
-log('user id: '+ new usr().getUserID() +" "+ new usr().getFullName() +" "+ new usr().getEmail() );
+var u = new usr();
+log('user id: '+ u.getUserID() +" "+ u.getFullName() +" "+ u.getEmail() );
