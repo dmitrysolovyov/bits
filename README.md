@@ -1,3 +1,3 @@
-This repository contains JavaScript and ServiceNow based examples of scripts;
+Some JavaScript/ServiceNow scripts
 
 Bits started 09.06.2017
