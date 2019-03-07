@@ -47,7 +47,7 @@ function($scope, $sce) {
 //business rule to validate country. 
 //there can be only 1 calendar per country
 
-//AskHR | one calendar per country
+//one calendar per country
 //u_hr_calendar
 //before insert upgrade
 (function executeRule(current, previous /*null when async*/) {
