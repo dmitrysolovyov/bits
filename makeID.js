@@ -1,8 +1,8 @@
 function makeID(){
-    var text = "";
-    var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+    var id = "";
+    var possibleChars = "abcdefghijklmnopqrstuvwxyz0123456789";
     for (var i = 0; i < 30; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+        id += possibleChars.charAt(Math.floor(Math.random() * possibleChars.length));
     }
-    return text;
+    return id;
 }
