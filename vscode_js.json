@@ -1,107 +1,128 @@
 {
-    "console.warn": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "cw",
-        "body": [
-            "console.warn(${1:variable});"
-        ],
-        "description": "console.warn"
-    },
-    "console.log": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "cl",
-        "body": [
-            "console.log(${1:variable});"
-        ],
-        "description": "console.log"
-    },
-    "for loop": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "for",
-        "body": [
-            "for (var i = 0; i < ${1:array_name}.length; i++) {"
-            "    // while (${1:array_name}[i] === ${2:value_to_compare}) {"
-            "    //logic here;"
-            "    //${1:array_name}.splice(i, 1);"
-            "    }"
-            "}"
-        ],
-        "description": "for loop"
-    },
-    "split": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "sp",
-        "body": [
-            "split('$1');"
-        ],
-        "description": "split"
-    },
-    "join": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "j",
-        "body": [
-            "join('');"
-        ],
-        "description": "join"
-    },
-    "split join": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "spl",
-        "body": [
-            "split('$1').join('');"
-        ],
-        "description": "split join"
-    },
-    "variable": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "v",
-        "body": [
-            "var ${1:variable} = $2;"
-        ],
-        "description": "variable"
-    },
-    "debug logger": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "debug",
-        "body": [
-            "var DEBUG = true; // true or false to Enable/Disable logging",
-            "var LOG_PREFIX = '[DEBUG]';",
-            "var log = function(){",
-            "	if(DEBUG){",
-            "		var args = Array.prototype.slice.call(arguments);",
-            "		args.unshift(LOG_PREFIX + ' ');",
-            "		console.log.apply(console, args);",
-            "	}",
-            "}"
-        ],
-        "description": "create debug logger function"
-    },
-    "try catch": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "trc",
-        "body": [
-            "try {",
-            "	${1://logic here}",
-            "} catch (err) {",
-            "	console.warn('ERROR - '' + err);",
-            "   ${2://some more logic here}",
-            "}"
-        ],
-        "description": "Try Cacth Statement"
-    },
-    "try catch": {
-        "scope": "javascript,typescript,plaintext",
-        "prefix": "doc",
-        "body": [
-            "/**",
-            "",
-            "	* Description: ",
-            "	* Type: ",
-            "	* Parameters:",
-            "	* Returns:",
-            "",
-            "*/"
-        ],
-        "description": "documenting code"
-    }
+	"console.warn": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "cw",
+		"body": [
+			"console.warn(${1:variable});"
+		],
+		"description": "console.warn"
+	},
+	"console.log": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "cl",
+		"body": [
+			"console.log(${1:variable});"
+		],
+		"description": "console.log"
+	},
+	"for loop": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "for",
+		"body": [
+			"for (var i = 0; i < ${1:array_name}.length; i++) {"
+			"    // while (${1:array_name}[i] === ${2:value_to_compare}) {"
+			"    //logic here;"
+			"    //${1:array_name}.splice(i, 1);"
+			"    }"
+			"}"
+		],
+		"description": "for loop"
+	},
+	"split": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "sp",
+		"body": [
+			"split('$1');"
+		],
+		"description": "split"
+	},
+	"join": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "j",
+		"body": [
+			"join('');"
+		],
+		"description": "join"
+	},
+	"split join": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "spl",
+		"body": [
+			"split('$1').join('');"
+		],
+		"description": "split join"
+	},
+	"variable": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "v",
+		"body": [
+			"var ${1:variable} = $2;"
+		],
+		"description": "variable"
+	},
+	"debug logger": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "dbg",
+		"body": [
+			"var DEBUG = true; // true or false to Enable/Disable logging",
+			"var LOG_PREFIX = '[DEBUG]';",
+			"var log = function(){",
+			"	if(DEBUG){",
+			"		var args = Array.prototype.slice.call(arguments);",
+			"		args.unshift(LOG_PREFIX + ' ');",
+			"		console.log.apply(console, args);",
+			"	}",
+			"}"
+		],
+		"description": "create debug logger function"
+	},
+	"try catch": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "trc",
+		"body": [
+			"try {",
+			"	${1://logic here}",
+			"} catch (err) {",
+			"	console.warn('ERROR - '' + err);",
+			"   ${2://some more logic here}",
+			"}"
+		],
+		"description": "Try Cacth Statement"
+	},
+	"documenting": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "doc",
+		"body": [
+			"/**",
+			"",
+			"	* Description: ",
+			"	* Type: ",
+			"	* Parameters:",
+			"	* Returns:",
+			"",
+			"*/"
+		],
+		"description": "documenting code"
+	},
+	"addEventListener": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "addevnt",
+		"body": [
+			"addEventListener('click', function(event) {",
+			"	//event.preventDefault();",
+			"});"
+		],
+		"description": "addEventListener"
+	},
+	"querySelector": {
+		"scope": "javascript,typescript,plaintext",
+		"prefix": "qs",
+		"body": [
+			"// querySelector, jQuery style",
+			"var $ = function (selector) {",
+			"	return document.querySelector(selector);",
+			"};"
+		],
+		"description": "querySelector"
+	}
 }
