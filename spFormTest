@@ -1,6 +1,7 @@
 /**
 * Description: populates service portal forms, which contain numerous mandatory fields, like stings, numbers, dates, tickboxes and references;
 Script interact with angular and server-side to populate reference fields;
+Please note that service portal may use another variables naming convention, depending on platform release, this may cause errors;
 * Note: The duration of the script execution depends on quantity of fields (and especially on a nubmer of records in reference tables);
         Script may cause errors if interacts with onChange client scripts;
 * Usage: when the form loaded run the function from console.
