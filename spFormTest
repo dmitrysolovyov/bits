@@ -1,12 +1,3 @@
-/**
-* Description: populates service portal forms, which contain numerous mandatory fields, like stings, numbers, dates, tickboxes and references;
-Script interact with angular and server-side to populate reference fields;
-Please note that service portal may use another variables naming convention, depending on platform release, this may cause errors;
-* Note: The duration of the script execution depends on quantity of fields (and especially on a nubmer of records in reference tables);
-        Script may cause errors if interacts with onChange client scripts;
-* Usage: when the form loaded run the function from console.
-* PLEASE BEWARE OF: using on forms which contain references to tables with many thousands records, this may affect the instance performance;
-*/
 function spFormTest() {
     var DEBUG = true,
         LOG_PREFIX = "[DEBUG]",
@@ -26,10 +17,8 @@ function spFormTest() {
         // If cancelled, don't dispatch our event
         var cancelled = !elem.dispatchEvent(evt);
         if (cancelled) {
-            // A handler called preventDefault.
             log("cancelled");
         } else {
-            // None of the handlers called preventDefault.
             log("clicked");
         }
     };
@@ -37,7 +26,7 @@ function spFormTest() {
     function getTodayDate() {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, "0");
-        var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+        var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0
         var yyyy = today.getFullYear();
         today = dd + "/" + mm + "/" + yyyy;
         return today;
@@ -54,7 +43,7 @@ function spFormTest() {
     }
 
     function setReferenceRandom(fieldname) {
-        var gf = angular.element(document.getElementById(fieldname)).scope().getGlideForm(); //g_form
+        var gf = angular.element(document.getElementById(fieldname)).scope().getGlideForm();
         gf.getReference(fieldname, function (gr) {
             var refTable = gr.getTableName();
             var randomId;
@@ -91,7 +80,7 @@ function spFormTest() {
                     setReferenceRandom(input.name);
                 }
                 if (input.name != "" && input.name.indexOf("u_") > -1) {
-                    var gForm = angular.element(document.getElementById(input.name)).scope().getGlideForm(); //g_form
+                    var gForm = angular.element(document.getElementById(input.name)).scope().getGlideForm();
                     log(input.name);
                     gForm.setMandatory(input.name, false);
                     if (
@@ -104,7 +93,7 @@ function spFormTest() {
                         input.name.indexOf("email") > -1 ||
                         input.name.indexOf("e-mail") > -1
                     ) {
-                        gForm.setValue(input.name, "name.lastname@company.com");
+                        gForm.setValue(input.name, "someone@example.com");
                     } else if (input.name.indexOf("date") > -1) {
                         var somedate = getTodayDate();
                         gForm.setValue(input.name, somedate);
@@ -124,15 +113,14 @@ function spFormTest() {
     for (var i = 0; i < textareas.length; i++) {
         var textarea = textareas[i];
         if (textarea.name != "" && textarea.name.indexOf("u_") > -1) {
-            var gfrm = angular.element(document.getElementById(textarea.name)).scope().getGlideForm(); //g_form
+            var gfrm = angular.element(document.getElementById(textarea.name)).scope().getGlideForm();
             log(textarea.name);
             gfrm.setMandatory(textarea.name, false);
-            gfrm.setValue(textarea.name, "some more text here");
+            gfrm.setValue(textarea.name, "some text here");
         }
         text.push(textarea.name);
     }
 
     runReport(inp, text);
 }
-//usage
 spFormTest();
