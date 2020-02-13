@@ -3,8 +3,7 @@ function onChange(control, oldValue, newValue, isLoading, isTemplate) {
         fieldsList = [],
         relatedListNames = ["u_m2m_table_name.u_related_table_list", "u_table_name.u_related_table_2_list"],
         sectionNames = ["section_name1","section_name2","section_name3"],
-        infoMessage = "<div id=\"elem_id\" style=\"color: RGB(255, 255, 255); background-color: RGB(24, 201, 16);\">INFO: some dummy text here.</div>",
-        
+        infoMessage = "<div id=\"elem_id\" style=\"color: RGB(255, 255, 255); background-color: RGB(24, 201, 16);\">INFO: some dummy text here.</div>", 
         setFieldsReadOnly = function(fields, isReadOnly, exclusions){
             fields.forEach(function(field){
                 if(exclusions.indexOf(field) == -1){
