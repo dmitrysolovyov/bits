@@ -1,0 +1,48 @@
+function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+	var readOnlyExclusions = "sys_created_on,sys_created_by,sys_updated_on,sys_updated_by,u_my_field_1,u_my_field_2,u_my_field_3,u_my_long_field_name,u_yet_another", 
+        fieldsList = [],
+        relatedListNames = ["u_m2m_table_name.u_related_table_list", "u_table_name.u_related_table_2_list"],
+        sectionNames = ["section_name1","section_name2","section_name3"],
+        infoMessage = "<div id=\"elem_id\" style=\"color: RGB(255, 255, 255); background-color: RGB(24, 201, 16);\">INFO: some dummy text here.</div>",
+        
+        setFieldsReadOnly = function(fields, isReadOnly, exclusions){
+            fields.forEach(function(field){
+                if(exclusions.indexOf(field) == -1){
+                    g_form.setReadOnly(field, isReadOnly);
+                }
+            });
+        },
+        hideRelatedList = function(relatedList, isVisible){
+            relatedList.forEach(function(list){
+                if(isVisible){
+                    g_form.hideRelatedList(list);
+                } else {
+                    g_form.showRelatedList(list);
+                }
+            });
+        },
+        hideSections = function(sections, isVisible){
+            sections.forEach(function(section){
+                g_form.setSectionDisplay(section, !isVisible);
+            });
+        },
+        addElement = function(parentElement, newDomElement){
+            angular.element(parentElement).before(newDomElement);
+        },
+        removeElement = function(id){
+            angular.element(id).remove();
+        };
+	angular.element(".form-group").each(function(){if(this.id)fieldsList.push(/\..{1,}\.(.{1,})/i.exec(this.id)[1]);});
+	if (newValue === "true") {
+        setFieldsReadOnly(fieldsList, true, readOnlyExclusions);
+        hideRelatedList(relatedListNames, true);
+        hideSections(sectionNames, true);
+        addElement(".section-content:first", infoMessage);
+	} 
+	else {
+        setFieldsReadOnly(fieldsList, false, readOnlyExclusions);
+        hideRelatedList(relatedListNames, false);
+        hideSections(sectionNames, false);
+        removeElement("#elem_id");
+	}
+}
